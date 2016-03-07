@@ -85,8 +85,9 @@ class PurchaseOrder(models.Model):
     def action_picking_create(self):
         picking_obj = self.env['stock.picking']
         picking_id = super(PurchaseOrder, self).action_picking_create()
-        picking = picking_obj.browse(picking_id)
-        picking.operating_unit_id = self.operating_unit_id.id
+        if picking_id:
+            picking = picking_obj.browse(picking_id)
+            picking.operating_unit_id = self.operating_unit_id.id
         return picking_id
 
     @api.model
