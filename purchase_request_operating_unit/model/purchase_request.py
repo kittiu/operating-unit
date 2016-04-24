@@ -19,6 +19,7 @@
 #
 ##############################################################################
 from openerp import fields, models, api, _
+from openerp.exceptions import Warning as UserError
 
 
 class PurchaseRequest(models.Model):
@@ -37,7 +38,7 @@ class PurchaseRequest(models.Model):
     def _check_company_operating_unit(self):
         if self.company_id and self.operating_unit_id and \
                 self.company_id != self.operating_unit_id.company_id:
-            raise Warning(_('The Company in the Purchase Request and in '
+            raise UserError(_('The Company in the Purchase Request and in '
                             'the Operating Unit must be the same.'))
 
     @api.one
@@ -64,9 +65,9 @@ class PurchaseRequest(models.Model):
             if types:
                 self.picking_type_id = types[:1]
             else:
-                raise Warning(_("No Warehouse found with the "
-                                "Operating Unit indicated in the "
-                                "Purchase Request!"))
+                raise UserError(_("No Warehouse found with the "
+                                  "Operating Unit indicated in the "
+                                  "Purchase Request!"))
 
 
 class PurchaseRequestLine(models.Model):
